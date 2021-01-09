@@ -1,187 +1,54 @@
 #include "Hippo.h"
 #include <iostream>
 
-#define bookCount 5
-
 using namespace std;
 
 int main() {
 	Hippo hippo;
 
 	char userInputChar;
-
-	int lineLength;
-
-	bool reCame;
-
-	string name;
-	int bookNumber;
-
-	char book[bookCount][50] = {
-		"Cinderella", "Gretel", "Snow White", "Little Red Ridinghood", "Goldilocks"
-	};
-
-	int page;
+	bool first = false;
 	
 	while (true) {
+		if (first != true) {
+			first = true;
+		}
+		else {
+			for (int i = 0; i < lineLength; i += 1) {
+				cout << '-';
+				if (i == lineLength - 1) cout << "\n";
+			}
+		}
+
 		cout << "¢·Hippo library¢¹ \n";
 		cout << "\n";
 		cout << "main page \n";
-		cout << "\n a. borrow \n b. return \n c. quit  \n \n> ";
+		cout << "\n a. borrow \n b. return \n c. search \n d. quit \n \n> ";
 		cin >> userInputChar;
-		page = 0;
-		reCame = false;
-		lineLength = 25;
-
-		for (int i = 0; i < lineLength; i += 1) {
-			cout << '-';
-		}
-		cout << "\n";
-
+		
 		if (userInputChar == 'a') {
-			cout << "borrow page \n";
-			page = 1;
+			hippo.borrowBook();
+			continue;
 		}
 		else if (userInputChar == 'b') {
-			cout << "return page \n";
-			page = 2;
+			hippo.returnBook();
+			continue;
 		}
 		else if (userInputChar == 'c') {
+			continue;
+		}
+		else if (userInputChar == 'd') {
 			cout << "system turned off \n";
 			break;
 		}
 		else {
 			cout << "page cannot found \n";
-			for (int i = 0; i < lineLength; i += 1) {
+			for (int i = 0; i < 25; i += 1) {
 				cout << '-';
 			}
 			cout << "\n";
 			continue;
 		}
-
-		while (true) {
-			if (page == 1) {
-				if (reCame == true) {
-					for (int i = 0; i < lineLength; i += 1) {
-						cout << '-';
-					}
-					cout << "\n";
-				}
-
-				cout << "\n your name: ";
-				cin >> name;
-				cout << " book number: ";
-				cin >> bookNumber;
-
-				if (bookNumber == 0) {
-					break;
-				}
-				else if (bookNumber > bookCount || bookNumber < 0) {
-					for (int i = 0; i < lineLength; i += 1) {
-						cout << '-';
-					}
-					cout << "\n";
-					cout << "book cannot found \n";
-					for (int i = 0; i < lineLength; i += 1) {
-						cout << '-';
-					}
-					cout << "\n";
-				}
-				else {
-					for (int i = 0; i < lineLength; i += 1) {
-						cout << '-';
-					}
-					cout << "\n";
-					cout << "your name: " << name << "\n";
-					cout << "book title: " << book[bookNumber - 1] << "\n";
-
-					cout << "\nright?(y/n) : ";
-					cin >> userInputChar;
-
-					if (userInputChar == 'n') {
-						reCame = true;
-						continue;
-					}
-					else if (userInputChar == 'y') {
-						break;
-					}
-					else {
-						cout << "unknown argument";
-					}
-				}
-			}
-
-			else if (page == 2) {
-				if (reCame == true) {
-					for (int i = 0; i < lineLength; i += 1) {
-						cout << '-';
-					}
-					cout << "\n";
-				}
-
-				cout << "\n book number: ";
-				cin >> bookNumber;
-
-				if (bookNumber == 0) {
-					break;
-				}
-				else if (bookNumber > bookCount || bookNumber < 0) {
-					for (int i = 0; i < lineLength; i += 1) {
-						cout << '-';
-					}
-					cout << "\n";
-					cout << "book cannot found \n";
-					for (int i = 0; i < lineLength; i += 1) {
-						cout << '-';
-					}
-					cout << "\n";
-				}
-				else {
-					for (int i = 0; i < lineLength; i += 1) {
-						cout << '-';
-					}
-					cout << "\n";
-					cout << "book title: " << book[bookNumber - 1] << "\n";
-
-					cout << "\nright?(y/n) : ";
-					cin >> userInputChar;
-
-					if (userInputChar == 'n') {
-						reCame = true;
-						continue;
-					}
-					else if (userInputChar == 'y') {
-						break;
-					}
-					else {
-						cout << "unknown argument";
-					}
-				}
-			}
-
-		}
-
-		if (bookNumber == 0) {
-			for (int i = 0; i < lineLength; i += 1) {
-				cout << '-';
-			}
-			cout << "\n";
-			cout << "canceled \n";
-		}
-		else {
-			cout << "\ncomplete \n";
-		}
-
-		for (int i = 0; i < lineLength; i += 1) {
-			cout << '-';
-		}
-		cout << "\n";
-
 	}
-
-	for (int i = 0; i < lineLength; i += 1) {
-		cout << '-';
-	}
-	
 	return 0;
 }
