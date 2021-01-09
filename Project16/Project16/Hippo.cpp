@@ -16,7 +16,7 @@ int main() {
 		else {
 			for (int i = 0; i < lineLength; i += 1) {
 				cout << '-';
-				if (i == lineLength - 1) cout << "\n";
+				if (i == lineLength - 1) cout << endl;
 			}
 		}
 
@@ -38,15 +38,15 @@ int main() {
 			continue;
 		}
 		else if (userInputChar == 'd') {
-			cout << "system turned off \n";
+			cout << "system turned off" << endl;
 			break;
 		}
 		else {
-			cout << "page cannot found \n";
 			for (int i = 0; i < 25; i += 1) {
 				cout << '-';
 			}
-			cout << "\n";
+			cout << "page cannot found " << endl;
+			cout << endl;
 			continue;
 		}
 	}
