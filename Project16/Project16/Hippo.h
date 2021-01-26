@@ -7,7 +7,6 @@
 #include <string>
 #include <stdlib.h>
 
-#define bookCount 5
 #define lineLength 25
 
 using namespace std;
@@ -39,33 +38,17 @@ private:
 	}
 
 public:
+	/*
 	char book[bookCount][50] = {
 		"Cinderella", "Gretel", "Snow White", "Little Red Ridinghood", "Goldilocks"
 	};
+	*/
+	
 	map<int, string> books;
 
-public:
+private:
 	vector<int> borrowedBooks;
 	map<int, string> state;
-
-	void load() {
-		openFile.open(bookListFilePath);
-		string line;
-
-		if (openFile.is_open()) {
-			while (getline(openFile, line)) {
-				vector<string> splitedLine = split(line);
-
-				const char *snum = splitedLine[1].c_str();
-				int bookNum = atoi(snum);
-				string bookTitle = splitedLine[splitedLine.size() - 1];
-
-				books.insert(pair<int, string>(bookNum, bookTitle));
-			}
-		}
-		
-		openFile.close();
- 	}
 
 	string askName() {
 		string name = " ";
@@ -82,7 +65,7 @@ public:
 		cout << " book number: ";
 		cin >> bookNumber;
 
-		return bookNumber - 1;
+		return bookNumber;
 	}
 
 	string askBookTitle() {
@@ -95,6 +78,25 @@ public:
 	}
 
 public:
+	void load() {
+		openFile.open(bookListFilePath);
+		string line;
+
+		if (openFile.is_open()) {
+			while (getline(openFile, line)) {
+				vector<string> splitedLine = split(line);
+
+				const char* snum = splitedLine[1].c_str();
+				int bookNum = atoi(snum);
+				string bookTitle = splitedLine[splitedLine.size() - 1];
+
+				books.insert(pair<int, string>(bookNum, bookTitle));
+			}
+		}
+
+		openFile.close();
+	}
+
 	void borrowBook() {
 		for (int i = 0; i < lineLength; i += 1) {
 			cout << '-';
@@ -113,7 +115,7 @@ public:
 			cout << "it is canceled" << endl;
 			return;
 		}
-		else if (bookNumber < 0 || bookCount < bookNumber) {
+		else if (bookNumber < 0 || books.size() < bookNumber) {
 			for (int i = 0; i < lineLength; i += 1) {
 				cout << '-';
 				if (i == lineLength - 1) cout << endl;
@@ -151,7 +153,7 @@ public:
 			cout << "it is canceled" << endl;
 			return;
 		}
-		else if (bookNumber < 0 || bookNumber > bookCount) {
+		else if (bookNumber < 0 || bookNumber > books.size()) {
 			for (int i = 0; i < lineLength; i += 1) {
 				cout << '-';
 				if (i == lineLength - 1) cout << endl;
@@ -168,7 +170,7 @@ public:
 					cout << '-';
 					if (i == lineLength - 1) cout << endl;
 				}
-				cout << book[bookNumber] << " hasn't been borrowed" << endl;
+				cout << books[bookNumber] << " hasn't been borrowed" << endl;
 				returnBook();
 			}
 			confirm('r', name, bookNumber);
@@ -184,14 +186,14 @@ public:
 
 		if (type == 'b') {
 			cout << "your name: " << name << endl;
-			cout << "book title: " << book[bookNumber] << endl << endl;
+			cout << "book title: " << books[bookNumber] << endl << endl;
 
 			cout << "Is all right?(y/n) ";
 
 			char reply = ' ';
 			cin >> reply;
 			if (reply == 'y' || reply == 'Y') {
-				cout << name << " borrowed " << book[bookNumber] << endl;
+				cout << name << " borrowed " << books[bookNumber] << endl;
 				state.insert(pair<int, string>(bookNumber, name));
 				borrowedBooks.push_back(bookNumber);
 				return;
@@ -202,14 +204,14 @@ public:
 		}
 		else if (type == 'r') {
 			cout << "your name: " << name << endl;
-			cout << "book title: " << book[bookNumber] << endl << endl;
+			cout << "book title: " << books[bookNumber] << endl << endl;
 
 			cout << "Is all right?(y/n) ";
 
 			char reply = ' ';
 			cin >> reply;
 			if (reply == 'y' || reply == 'Y') {
-				cout << name << " returned " << book[bookNumber] << endl;
+				cout << name << " returned " << books[bookNumber] << endl;
 				state.erase(bookNumber);
 				borrowedBooks.erase(borrowedBooks.begin() + (find(borrowedBooks.begin(), borrowedBooks.end(), bookNumber) - borrowedBooks.begin()));
 				return;
@@ -250,7 +252,7 @@ public:
 			
 			map<int, string> foundBooks;
 
-			for (auto i : book) {
+			for (auto i : books) {
 				
 			}
 		}
