@@ -8,6 +8,13 @@ int main() {
 
 	char userInputChar;
 	bool first = false;
+
+	hippo.load();
+
+	for (auto [num, title] : hippo.books) {
+		cout << "num: " << num << ", title: " << title << endl;
+	}
+	cout << endl;
 	
 	while (true) {
 		if (first != true) {
@@ -35,6 +42,7 @@ int main() {
 			continue;
 		}
 		else if (userInputChar == 'c') {
+			hippo.search();
 			continue;
 		}
 		else if (userInputChar == 'd') {

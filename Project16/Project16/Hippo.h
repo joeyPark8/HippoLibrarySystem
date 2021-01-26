@@ -1,7 +1,12 @@
 #pragma once
+
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <map>
+#include <string>
+#include <stdlib.h>
+
 #define bookCount 5
 #define lineLength 25
 
@@ -9,14 +14,58 @@ using namespace std;
 
 class Hippo
 {	
+private:
+	string bookListFilePath = "data/bookList.txt";
+
+	ifstream openFile;
+
+	vector<string> split(string str) {
+		vector<string> splitedString;
+		string word;
+		int count = 0;
+		for (char i : str) {
+			count += 1;
+			if (i != ' ' && count != str.length()) {
+				word += i;
+			}
+			else {
+				if (count == str.length()) word += i;
+				splitedString.push_back(word);
+				word = "";
+			}
+		}
+
+		return splitedString;
+	}
+
 public:
 	char book[bookCount][50] = {
 		"Cinderella", "Gretel", "Snow White", "Little Red Ridinghood", "Goldilocks"
 	};
+	map<int, string> books;
 
-private:
+public:
 	vector<int> borrowedBooks;
 	map<int, string> state;
+
+	void load() {
+		openFile.open(bookListFilePath);
+		string line;
+
+		if (openFile.is_open()) {
+			while (getline(openFile, line)) {
+				vector<string> splitedLine = split(line);
+
+				const char *snum = splitedLine[1].c_str();
+				int bookNum = atoi(snum);
+				string bookTitle = splitedLine[splitedLine.size() - 1];
+
+				books.insert(pair<int, string>(bookNum, bookTitle));
+			}
+		}
+		
+		openFile.close();
+ 	}
 
 	string askName() {
 		string name = " ";
@@ -179,14 +228,31 @@ public:
 		cout << "search page" << endl;
 
 		char userInputChar;
-		cout << "a. search with book title \n b. search with book number \n > ";
+		cout << "a. search with book title \nb. search with book number \n > ";
 		cin >> userInputChar;
 
 		if (userInputChar == 'a') {
+			string bookTitle = askBookTitle();
+
+			map<string, string> foundBook;
 			
+			
+			for (auto [num, title] : books) {
+				if (bookTitle == title) {
+					
+				}
+			}
+
+			cout << bookTitle << "'s booknumber is " << endl;
 		}
 		else if (userInputChar == 'b') {
+			int bookNumber = askBookNumber();
+			
+			map<int, string> foundBooks;
 
+			for (auto i : book) {
+				
+			}
 		}
 		else {
 
