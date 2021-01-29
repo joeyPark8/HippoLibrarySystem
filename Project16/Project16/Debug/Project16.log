@@ -1,2 +1,22 @@
 ﻿  Hippo.cpp
-  Project16.vcxproj -> C:\Users\USER\source\repos\Project16\Debug\Project16.exe
+C:\Users\USER\source\repos\Project16\Project16\Hippo.h(130,43): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\USER\source\repos\Project16\Project16\Hippo.h(169,41): warning C4018: '>': signed 또는 unsigned가 일치하지 않습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xutility(5440,21): error C2676: 이항 '==': 'std::pair<const int,std::string>'이(가) 이 연산자를 정의하지 않거나 미리 정의된 연산자에 허용되는 형식으로의 변환을 정의하지 않습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xutility(5474): message : 컴파일되는 함수 템플릿 인스턴스화 '_InIt std::_Find_unchecked1<_InIt,_Ty>(_InIt,const _InIt,const _Ty &,std::false_type)'에 대한 참조를 확인하세요.
+          with
+          [
+              _InIt=std::_Tree_unchecked_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const int,std::string>>>>,
+              _Ty=int
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xutility(5480): message : 컴파일되는 함수 템플릿 인스턴스화 '_InIt std::_Find_unchecked<std::_Tree_unchecked_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const int,std::string>>>>,_Ty>(const _InIt,const _InIt,const _Ty &)'에 대한 참조를 확인하세요.
+          with
+          [
+              _InIt=std::_Tree_unchecked_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const int,std::string>>>>,
+              _Ty=int
+          ]
+C:\Users\USER\source\repos\Project16\Project16\Hippo.h(138): message : 컴파일되는 함수 템플릿 인스턴스화 '_InIt std::find<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const int,std::string>>>>,int>(_InIt,const _InIt,const _Ty &)'에 대한 참조를 확인하세요.
+          with
+          [
+              _InIt=std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const int,std::string>>>>,
+              _Ty=int
+          ]
