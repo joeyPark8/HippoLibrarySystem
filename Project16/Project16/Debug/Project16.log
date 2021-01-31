@@ -1,4 +1,4 @@
 ﻿  Hippo.cpp
-C:\Users\USER\source\repos\Project16\Project16\Hippo.h(136,43): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\USER\source\repos\Project16\Project16\Hippo.h(177,41): warning C4018: '>': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\USER\source\repos\Project16\Project16\Hippo.h(150,43): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\USER\source\repos\Project16\Project16\Hippo.h(191,41): warning C4018: '>': signed 또는 unsigned가 일치하지 않습니다.
   Project16.vcxproj -> C:\Users\USER\source\repos\Project16\Debug\Project16.exe
