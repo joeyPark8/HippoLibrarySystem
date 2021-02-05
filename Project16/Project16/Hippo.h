@@ -7,19 +7,17 @@
 #include <string>
 #include <stdlib.h>
 
-#define lineLength 25
+#define lineLength 50
 
 using namespace std;
 
 class Hippo
 {
 private:
-	map<int, string> borrowedBooks;
+	vector<int> borrowedBookNums;
 
 	string bookListFilePath = "data/bookList.txt";
 	string borrowedBookStateFildPath = "data/borrowedBookState.txt";
-
-	ifstream openFile;
 
 public:
 	map<int, string> books;
@@ -81,19 +79,24 @@ private:
 		return false;
 	}
 
-	string getName(ifstream file, string str) {
-		string line;
-		while (getline(file, line)) {
-			if (split(line)[3] == str) {
-				return split(line)[5];
+	bool vfound(vector<int> m, int i) {
+		for (auto num : m) {
+			if (num == i) {
+				return true;
 			}
 		}
 
-		return NULL;
+		return false;
+	}
+
+	bool contain(string str1, string str2) {
+		return (str1.find(str2) != string::npos);
 	}
 
 public:
 	void load() {
+		ifstream openFile;
+
 		openFile.open(bookListFilePath);
 		string line;
 
@@ -121,9 +124,23 @@ public:
 				int bookNum = atoi(snum);
 				string bookTitle = splitedLine[3];
 
-				borrowedBooks.insert(pair<int, string>(bookNum, bookTitle));
+				borrowedBookNums.push_back(bookNum);
 			}
 		}
+	}
+
+	void update() {
+		ofstream writer;
+
+		writer.open(bookListFilePath);
+
+		if (writer.is_open()) {
+			for (auto [num, title] : books) {
+				writer << num << "";
+			}
+		}
+
+		writer.close();
 	}
 
 	void borrowBook() {
@@ -152,7 +169,7 @@ public:
 			cout << "Cannot find the book" << endl;
 			borrowBook();
 		}
-		else if (found(borrowedBooks, books[bookNumber])) { //find(borrowedBooks.begin(), borrowedBooks.end(), bookNumber) != borrowedBooks.end()
+		else if (vfound(borrowedBookNums, bookNumber)) {
 			for (int i = 0; i < lineLength; i += 1) {
 				cout << '-';
 				if (i == lineLength - 1) cout << endl;
@@ -171,10 +188,11 @@ public:
 		}
 		cout << "return page" << endl << endl;
 
+		ifstream openStateFile;
+		openStateFile.open(borrowedBookStateFildPath);
+
 		int bookNumber = askBookNumber();
 		string name;
-
-		openFile.open(borrowedBookStateFildPath);
 		
 		if (bookNumber == -1) {
 			for (int i = 0; i < lineLength; i += 1) {
@@ -193,8 +211,16 @@ public:
 			returnBook();
 		}
 		else {
-			if (found(borrowedBooks, books[bookNumber])) {
-				name = ""; //have to do it!
+			if (vfound(borrowedBookNums, bookNumber)) {
+				string line;
+				if (openStateFile.is_open()) {
+					while (getline(openStateFile, line)) {
+						vector<string> splitedLine = split(line);
+						if (splitedLine[3] == books[bookNumber]) {
+							name = splitedLine[5];
+						}
+					}
+				}
 			}
 			else {
 				for (int i = 0; i < lineLength; i += 1) {
@@ -206,6 +232,8 @@ public:
 			}
 			confirm('r', name, bookNumber);
 		}
+
+		openStateFile.close();
 	}
 
 	void confirm(char type, string name, int bookNumber) {
@@ -224,8 +252,8 @@ public:
 			char reply = ' ';
 			cin >> reply;
 			if (reply == 'y' || reply == 'Y') {
-				cout << name << " borrowed " << books[bookNumber] << endl;
-				borrowedBooks.insert(pair<int, string>(bookNumber, books[bookNumber]));
+				cout << endl << name << " borrowed " << books[bookNumber] << endl;
+				borrowedBookNums.push_back(bookNumber);
 				return;
 			}
 			else if (reply == 'n' || reply == 'N') {
@@ -241,8 +269,8 @@ public:
 			char reply = ' ';
 			cin >> reply;
 			if (reply == 'y' || reply == 'Y') {
-				cout << name << " returned " << books[bookNumber] << endl;
-				borrowedBooks.erase(bookNumber);
+				cout << endl << name << " returned " << books[bookNumber] << endl;
+				borrowedBookNums.erase(borrowedBookNums.begin());
 				return;
 			}
 			else if (reply == 'n' || reply == 'N') {
@@ -259,26 +287,100 @@ public:
 		cout << "search page" << endl;
 
 		char userInputChar;
-		cout << "a. search with book title \nb. search with book number \n > ";
+		cout << "\n a. search with book title \n b. search with book number \n\n> ";
 		cin >> userInputChar;
 
 		if (userInputChar == 'a') {
+			for (int i = 0; i < lineLength; i += 1) {
+				cout << '-';
+				if (i == lineLength - 1) cout << endl;
+			}
+			cout << "search page" << endl << endl;
+
 			string bookTitle = askBookTitle();
+
+			for (int i = 0; i < lineLength; i += 1) {
+				cout << '-';
+				if (i == lineLength - 1) cout << endl;
+			}
+			cout << "results" << endl << endl;
 
 			map<int, string> foundBook;
 			
-			
+			for (auto [num, title] : books) {
+				if (contain(title, bookTitle)) {
+					foundBook.insert(pair<int, string>(num, title));
+				}
+			}
 
-			cout << bookTitle << "'s booknumber is " << endl;
+			for (auto [num, title] : foundBook) {
+				if (vfound(borrowedBookNums, num)) {
+					cout << "number: " << num << ", title: " << title << ", state: unavilable" << endl;
+				}
+				else {
+					cout << "number: " << num << ", title: " << title << ", state: avilable" << endl;
+				}
+			}
 		}
 		else if (userInputChar == 'b') {
+			for (int i = 0; i < lineLength; i += 1) {
+				cout << '-';
+				if (i == lineLength - 1) cout << endl;
+			}
+			cout << "search page" << endl << endl;
+
 			int bookNumber = askBookNumber();
 			
+			for (int i = 0; i < lineLength; i += 1) {
+				cout << '-';
+				if (i == lineLength - 1) cout << endl;
+			}
+			cout << "results" << endl << endl;
+
 			map<int, string> foundBooks;
 
+			for (auto [num, title] : books) {
+				if (bookNumber == num) {
+					foundBooks.insert(pair<int, string>(num, title));
+				}
+			}
+
+			for (auto [num, title] : foundBooks) {
+				if (vfound(borrowedBookNums, num)) {
+					cout << "number: " << num << ", title: " << title << ", state: unavilable" << endl;
+				}
+				else {
+					cout << "number: " << num << ", title: " << title << ", state: avilable" << endl;
+				}
+			}
 		}
 		else {
+			cout << "Unvalid choice" << endl;
+		}
+	}
 
+	void modify() {
+		for (int i = 0; i < lineLength; i += 1) {
+			cout << '-';
+			if (i == lineLength - 1) cout << endl;
+		}
+		cout << "update page" << endl;
+
+		char choice;
+		cout << "\n a. register new books \n b. modify books information \n c. remove book registration \n" << endl << "> ";
+		cin >> choice;
+
+		if (choice == 'a') {
+			return;
+		}
+		else if (choice == 'b') {
+			return;
+		}
+		else if (choice == 'c') {
+			return;
+		}
+		else {
+			cout << "Unvalid choice" << endl;
 		}
 	}
 };

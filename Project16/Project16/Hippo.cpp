@@ -30,7 +30,7 @@ int main() {
 		cout << "¢·Hippo library¢¹ \n";
 		cout << "\n";
 		cout << "main page \n";
-		cout << "\n a. borrow \n b. return \n c. search \n d. quit \n \n> ";
+		cout << "\n a. borrow \n b. return \n c. search \n d. modify \n e. quit \n \n> ";
 		cin >> userInputChar;
 		
 		if (userInputChar == 'a') {
@@ -46,15 +46,23 @@ int main() {
 			continue;
 		}
 		else if (userInputChar == 'd') {
+			hippo.modify();
+			continue;
+		}
+		else if (userInputChar == 'e') {
+			for (int i = 0; i < lineLength; i++) {
+				cout << '-';
+				if (i == lineLength - 1) cout << endl;
+			}
 			cout << "system turned off" << endl;
 			break;
 		}
 		else {
-			for (int i = 0; i < 25; i += 1) {
+			for (int i = 0; i < lineLength; i += 1) {
 				cout << '-';
+				if (i == lineLength - 1) cout << endl;
 			}
 			cout << "page cannot found " << endl;
-			cout << endl;
 			continue;
 		}
 	}
