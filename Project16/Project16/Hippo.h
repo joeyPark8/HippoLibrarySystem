@@ -15,13 +15,14 @@ class Hippo
 {
 private:
 	vector<int> borrowedBookNums;
+	
 
 	string bookListFilePath = "data/bookList.txt";
 	string borrowedBookStateFildPath = "data/borrowedBookState.txt";
 
 public:
 	map<int, string> books;
-
+	map<int, string> peopleBorrowed;
 private:
 	string askName() {
 		string name = " ";
@@ -133,10 +134,14 @@ public:
 				const char* snum = splitedLine[1].c_str();
 				int bookNum = atoi(snum);
 				string bookTitle = splitedLine[3];
+				string name = splitedLine[5];
 
 				borrowedBookNums.push_back(bookNum);
+				peopleBorrowed.insert(pair<int, string>(bookNum, name));
 			}
 		}
+
+		openFile.close();
 	}
 
 	void save() {
@@ -228,15 +233,7 @@ public:
 		}
 		else {
 			if (vfound(borrowedBookNums, bookNumber)) {
-				string line;
-				if (openStateFile.is_open()) {
-					while (getline(openStateFile, line)) {
-						vector<string> splitedLine = split(line);
-						if (splitedLine[3] == books[bookNumber]) {
-							name = splitedLine[5];
-						}
-					}
-				}
+				name = peopleBorrowed[bookNumber];
 			}
 			else {
 				for (int i = 0; i < lineLength; i += 1) {
