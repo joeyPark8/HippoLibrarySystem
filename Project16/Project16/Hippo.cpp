@@ -46,10 +46,11 @@ int main() {
 			continue;
 		}
 		else if (userInputChar == 'd') {
-			hippo.modify();
+			hippo.update();
 			continue;
 		}
 		else if (userInputChar == 'e') {
+			hippo.save();
 			for (int i = 0; i < lineLength; i++) {
 				cout << '-';
 				if (i == lineLength - 1) cout << endl;

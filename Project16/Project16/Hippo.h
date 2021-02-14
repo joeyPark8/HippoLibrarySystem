@@ -89,6 +89,16 @@ private:
 		return false;
 	}
 
+	bool key_found(map<int, string> m, int num) {
+		for (auto [bnum, title] : m) {
+			if (bnum == num) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 	bool contain(string str1, string str2) {
 		return (str1.find(str2) != string::npos);
 	}
@@ -129,14 +139,20 @@ public:
 		}
 	}
 
-	void update() {
+	void save() {
 		ofstream writer;
 
 		writer.open(bookListFilePath);
 
+		int count = 0;
+
 		if (writer.is_open()) {
 			for (auto [num, title] : books) {
-				writer << num << "";
+				count += 1;
+				writer << "num: " << num << " title: " << title;
+				if (count != books.size()) {
+					writer << endl;
+				}
 			}
 		}
 
@@ -359,7 +375,7 @@ public:
 		}
 	}
 
-	void modify() {
+	void update() {
 		for (int i = 0; i < lineLength; i += 1) {
 			cout << '-';
 			if (i == lineLength - 1) cout << endl;
@@ -371,6 +387,23 @@ public:
 		cin >> choice;
 
 		if (choice == 'a') {
+			for (int i = 0; i < lineLength; i += 1) {
+				cout << '-';
+				if (i == lineLength - 1) cout << endl;
+			}
+			cout << "register new books" << endl << endl;
+
+			string title = askBookTitle();
+			int num = askBookNumber();
+
+			if (key_found(books, num)) {
+				cout << "This number is being used" << endl;
+			}
+			else {
+				cout << endl << "register book title: " << title << ", number: " << num << endl;
+				books.insert(pair<int, string>(num, title));
+			}
+
 			return;
 		}
 		else if (choice == 'b') {
