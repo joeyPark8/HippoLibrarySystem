@@ -15,10 +15,9 @@ class Hippo
 {
 private:
 	vector<int> borrowedBookNums;
-	
 
 	string bookListFilePath = "data/bookList.txt";
-	string borrowedBookStateFildPath = "data/borrowedBookState.txt";
+	string borrowedBookStateFilePath = "data/borrowedBookState.txt";
 
 public:
 	map<int, string> books;
@@ -104,6 +103,18 @@ private:
 		return (str1.find(str2) != string::npos);
 	}
 
+	int findVectorIndex(vector<int> v, int element) {
+		int index = 0;
+		for (auto i : v) {
+			if (i == element) {
+				return index;
+			}
+			index += 1;
+		}
+
+		return NULL;
+	}
+
 public:
 	void load() {
 		ifstream openFile;
@@ -125,7 +136,7 @@ public:
 
 		openFile.close();
 		
-		openFile.open(borrowedBookStateFildPath);
+		openFile.open(borrowedBookStateFilePath);
 		
 		if (openFile.is_open()) {
 			while (getline(openFile, line)) {
@@ -162,6 +173,26 @@ public:
 		}
 
 		writer.close();
+
+		writer.open(borrowedBookStateFilePath);
+
+		count = 0;
+
+		if (writer.is_open()) {
+			for (auto num : borrowedBookNums) {
+				count += 1;
+				writer << "num: " << num << " title: " << books[num] << " personBorrowed: " << peopleBorrowed[num];
+				if (count != books.size()) {
+					writer << endl;
+				}
+			}
+		}
+
+		writer.close();
+	}
+
+	void setting() {
+		return;
 	}
 
 	void borrowBook() {
@@ -174,7 +205,7 @@ public:
 		string name = askName();
 		int bookNumber = askBookNumber();
 
-		if (bookNumber == -1) {
+		if (bookNumber == 0) {
 			for (int i = 0; i < lineLength; i += 1) {
 				cout << '-';
 				if (i == lineLength - 1) cout << endl;
@@ -209,13 +240,10 @@ public:
 		}
 		cout << "return page" << endl << endl;
 
-		ifstream openStateFile;
-		openStateFile.open(borrowedBookStateFildPath);
-
 		int bookNumber = askBookNumber();
 		string name;
 		
-		if (bookNumber == -1) {
+		if (bookNumber == 0) {
 			for (int i = 0; i < lineLength; i += 1) {
 				cout << '-';
 				if (i == lineLength - 1) cout << endl;
@@ -229,7 +257,7 @@ public:
 				if (i == lineLength - 1) cout << endl;
 			}
 			cout << "Cannot find the book" << endl;
-			returnBook();
+			return;
 		}
 		else {
 			if (vfound(borrowedBookNums, bookNumber)) {
@@ -241,12 +269,10 @@ public:
 					if (i == lineLength - 1) cout << endl;
 				}
 				cout << books[bookNumber] << " hasn't been borrowed" << endl;
-				returnBook();
+				return;
 			}
 			confirm('r', name, bookNumber);
 		}
-
-		openStateFile.close();
 	}
 
 	void confirm(char type, string name, int bookNumber) {
@@ -267,6 +293,7 @@ public:
 			if (reply == 'y' || reply == 'Y') {
 				cout << endl << name << " borrowed " << books[bookNumber] << endl;
 				borrowedBookNums.push_back(bookNumber);
+				peopleBorrowed.insert(pair<int, string>(bookNumber, name));
 				return;
 			}
 			else if (reply == 'n' || reply == 'N') {
@@ -283,7 +310,7 @@ public:
 			cin >> reply;
 			if (reply == 'y' || reply == 'Y') {
 				cout << endl << name << " returned " << books[bookNumber] << endl;
-				borrowedBookNums.erase(borrowedBookNums.begin());
+				borrowedBookNums.erase(borrowedBookNums.begin() + findVectorIndex(borrowedBookNums, bookNumber));
 				return;
 			}
 			else if (reply == 'n' || reply == 'N') {

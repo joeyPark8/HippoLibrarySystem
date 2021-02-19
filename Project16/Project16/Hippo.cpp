@@ -35,7 +35,7 @@ int main() {
 		cout << "¢·Hippo library¢¹ \n";
 		cout << "\n";
 		cout << "main page \n";
-		cout << "\n a. borrow \n b. return \n c. search \n d. modify \n e. quit \n \n> ";
+		cout << "\n a. borrow \n b. return \n c. search \n d. modify \n e. setting \n f. quit \n \n> ";
 		cin >> userInputChar;
 		
 		if (userInputChar == 'a') {
@@ -55,6 +55,10 @@ int main() {
 			continue;
 		}
 		else if (userInputChar == 'e') {
+			hippo.setting();
+			continue;
+		}
+		else if (userInputChar == 'f') {
 			hippo.save();
 			for (int i = 0; i < lineLength; i++) {
 				cout << '-';
