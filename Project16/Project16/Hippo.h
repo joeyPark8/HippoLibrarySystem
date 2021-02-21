@@ -306,11 +306,30 @@ public:
 
 			cout << "Is all right?(y/n) ";
 
-			char reply = ' ';
+			char reply;
 			cin >> reply;
 			if (reply == 'y' || reply == 'Y') {
 				cout << endl << name << " returned " << books[bookNumber] << endl;
 				borrowedBookNums.erase(borrowedBookNums.begin() + findVectorIndex(borrowedBookNums, bookNumber));
+				return;
+			}
+			else if (reply == 'n' || reply == 'N') {
+				return;
+			}
+		}
+		else if (type == 'd') {
+			cout << "book number: " << bookNumber << endl;
+			cout << "book title: " << books[bookNumber] << endl << endl;
+
+			cout << "Do you really want to delete this book?(y/n) ";
+
+			char reply;
+			cin >> reply;
+			if (reply == 'y' || reply == 'Y') {
+				cout << endl << "number: " << bookNumber << ", title: " << books[bookNumber] << " is deleted" << endl;
+				map<int, string>::iterator it;
+				it = books.find(bookNumber);
+				books.erase(it, books.end());
 				return;
 			}
 			else if (reply == 'n' || reply == 'N') {
@@ -434,7 +453,22 @@ public:
 			return;
 		}
 		else if (choice == 'c') {
-			return;
+			for (int i = 0; i < lineLength; i += 1) {
+				cout << '-';
+				if (i == lineLength - 1) cout << endl;
+			}
+			cout << "remove book registeration" << endl << endl;
+
+			int num = askBookNumber();
+
+			if (key_found(books, num)) {
+				confirm('d', "", num);
+				return;
+			}
+			else {
+				cout << "This number isn't registered" << endl;
+				return;
+			}
 		}
 		else {
 			cout << "Unvalid choice" << endl;
