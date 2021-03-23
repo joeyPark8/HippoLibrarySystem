@@ -68,10 +68,11 @@ private:
 
 		return splitedString;
 	}
-
-	bool found(map<int, string> m, string str) {
-		for (auto [num, title] : m) {
-			if (title == str) {
+	
+	template<typename Type1, typename Type2>
+	bool valueFound(map<Type1, Type2> m, Type2 element) {
+		for (auto [key, value] : m) {
+			if (value == element) {
 				return true;
 			}
 		}
@@ -79,9 +80,10 @@ private:
 		return false;
 	}
 
-	bool vfound(vector<int> m, int i) {
-		for (auto num : m) {
-			if (num == i) {
+	template<typename Type1, typename Type2>
+	bool keyFound(map<Type1, Type2> m, Type1 element) {
+		for (auto [key, value] : m) {
+			if (key == element) {
 				return true;
 			}
 		}
@@ -89,9 +91,10 @@ private:
 		return false;
 	}
 
-	bool key_found(map<int, string> m, int num) {
-		for (auto [bnum, title] : m) {
-			if (bnum == num) {
+	template<typename Type1>
+	bool elementFound(vector<Type1> v, Type1 element) {
+		for (auto value : v) {
+			if (value == element) {
 				return true;
 			}
 		}
@@ -192,6 +195,7 @@ public:
 	}
 
 	void setting() {
+		
 		return;
 	}
 
@@ -221,7 +225,7 @@ public:
 			cout << "Cannot find the book" << endl;
 			borrowBook();
 		}
-		else if (vfound(borrowedBookNums, bookNumber)) {
+		else if (elementFound<int>(borrowedBookNums, bookNumber)) {
 			for (int i = 0; i < lineLength; i += 1) {
 				cout << '-';
 				if (i == lineLength - 1) cout << endl;
@@ -260,7 +264,7 @@ public:
 			return;
 		}
 		else {
-			if (vfound(borrowedBookNums, bookNumber)) {
+			if (elementFound<int>(borrowedBookNums, bookNumber)) {
 				name = peopleBorrowed[bookNumber];
 			}
 			else {
@@ -373,7 +377,7 @@ public:
 			}
 
 			for (auto [num, title] : foundBook) {
-				if (vfound(borrowedBookNums, num)) {
+				if (elementFound<int>(borrowedBookNums, num)) {
 					cout << "number: " << num << ", title: " << title << ", state: unavilable" << endl;
 				}
 				else {
@@ -405,7 +409,7 @@ public:
 			}
 
 			for (auto [num, title] : foundBooks) {
-				if (vfound(borrowedBookNums, num)) {
+				if (elementFound<int>(borrowedBookNums, num)) {
 					cout << "number: " << num << ", title: " << title << ", state: unavilable" << endl;
 				}
 				else {
@@ -439,7 +443,7 @@ public:
 			string title = askBookTitle();
 			int num = askBookNumber();
 
-			if (key_found(books, num)) {
+			if (keyFound<int, string>(books, num)) {
 				cout << "This number is being used" << endl;
 			}
 			else {
@@ -461,7 +465,7 @@ public:
 
 			int num = askBookNumber();
 
-			if (key_found(books, num)) {
+			if (keyFound<int, string>(books, num)) {
 				confirm('d', "", num);
 				return;
 			}

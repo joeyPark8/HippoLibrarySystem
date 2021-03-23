@@ -11,14 +11,10 @@ int main() {
 
 	hippo.load();
 
-	for (auto [num, title] : hippo.books) {
-		cout << "num: " << num << ", title: " << title << endl;
-	}
+	for (auto [num, title] : hippo.books) cout << "num: " << num << ", title: " << title << endl;
 	cout << endl;
 
-	for (auto [num, name] : hippo.peopleBorrowed) {
-		cout << "num: " << num << ", name: " << name << endl;
-	}
+	for (auto [num, name] : hippo.peopleBorrowed) cout << "num: " << num << ", name: " << name << endl;
 	cout << endl;
 	
 	while (true) {
